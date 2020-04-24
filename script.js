@@ -91,6 +91,10 @@ function append(pass) {
     var newPass = document.createElement("li")
     newPass.innerHTML = pass
     passStore.append(newPass)
+    
+    var space = document.createElement("li")
+    space.innerHTML = "<br>"
+    passStore.append(space)
 
     document.getElementById("currPass").textContent = pass
 
