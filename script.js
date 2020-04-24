@@ -10,9 +10,9 @@ var nums = "0123456789"
 var symbs = "!\"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~"
 var allChars = [upLet, lowLet, nums, symbs]
 
-// Calling the button
+// Calling the buttons
 var generateB = document.getElementById("generate")
-
+var copyB = document.getElementById("copy")
 
 // Checking which boxes are ticked
 var upper = document.getElementById("uppercase").checked
@@ -83,6 +83,32 @@ function charSetMake() {
 // var chars = document.getElementById("chars")
 // chars.addEventListener("click", charSetMakeCall)
 
+//Set the current password to the generated password and add it to the list of passwords
+function append(pass) {
+
+    var passStore = document.getElementById("passStore")
+    store = document.getElementById("passStore")
+    var newPass = document.createElement("li")
+    newPass.innerHTML = pass
+    passStore.append(newPass)
+
+    document.getElementById("currPass").textContent = pass
+
+}
+
+function copyPass() {
+
+    var copyText = document.getElementById("currPass");
+    var textArea = document.createElement("textarea");
+    textArea.value = copyText.textContent;
+    document.body.appendChild(textArea);
+    textArea.select();
+    document.execCommand("Copy");
+    textArea.remove();
+    alert("Copied the password to clipboard")
+
+  }
+
 // The function that will generate the passsword
 function createPassword(event) {
 
@@ -90,15 +116,21 @@ function createPassword(event) {
     checkedOne = Array.prototype.slice.call(checkboxes).some(x => x.checked)
     var length = document.getElementById("length").value
     var chars = charSetMake()
-    console.log(chars)
     var charAccess = chars.length
-    console.log(charAccess)
     var password = ""
 
 // Ensures at least one option is chosen
     if (checkedOne !== true) {
 
         alert("Please select at least one option.")
+        return
+
+    }
+
+//Ensures a valid length is used
+    if (length < 8 || length > 128) {
+
+        alert("Please enter a valid length")
         return
 
     }
@@ -112,6 +144,9 @@ function createPassword(event) {
 
     }
 
+    append(password)
+
 }
 
+copyB.addEventListener("click", copyPass)
 generateB.addEventListener("click", createPassword)
