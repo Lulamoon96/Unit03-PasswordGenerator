@@ -114,9 +114,8 @@ function copyPass() {
   }
 
 // The function that will generate the passsword
-function createPassword(event) {
+function createPassword() {
 
-    event.preventDefault()
     checkedOne = Array.prototype.slice.call(checkboxes).some(x => x.checked)
     var length = document.getElementById("length").value
     var chars = charSetMake()
@@ -148,9 +147,75 @@ function createPassword(event) {
 
     }
 
-    append(password)
+    return password
+
+    // console.log(password.length)
+    // append(password)
+
+}
+
+//Verifies the password matches the requirements using regular expression
+function verifyPass(pass) {
+
+    upper = document.getElementById("uppercase").checked
+    lower = document.getElementById("lowercase").checked
+    numb = document.getElementById("numbers").checked
+    symb = document.getElementById("symbols").checked
+    checked = [upper, lower, numb, symb]
+    var toBuild = 0
+    var regEx = new RegExp
+    var regUp = /(?=.*[A-Z])/
+    var regLow = /(?=.*[a-z])/
+    var regNum = /(?=.*\d)/
+    var regSpec = /(?=.*[!"#$%&'()*+,-./:;<=>?@[\]^_`{|}~])/
+    var regCont = [regUp, regLow, regNum, regSpec]
+    // var test = /(?=.*[A-Z])(?=.*[a-z])(?=.*\d)/
+
+    checked.forEach(function(bool, i){
+
+        if (bool) {
+
+            if (toBuild === 0) {
+
+                toBuild++
+                regEx = new RegExp(regCont[i].source)
+
+            }
+
+            else {
+                
+                regEx = new RegExp(regEx.source + regCont[i].source)
+
+            }
+
+        }
+        
+        }
+
+    )
+
+    return regEx.test(pass)
+
+}
+
+
+//Function to actually generate the password on click
+function givePass(event) {
+
+    event.preventDefault()
+    var pass = createPassword()
+    var verify = verifyPass(pass)
+
+    while (!verify) {
+
+        pass = createPassword()
+        verify = verifyPass(pass)
+
+    }
+
+    append(pass)
 
 }
 
 copyB.addEventListener("click", copyPass)
-generateB.addEventListener("click", createPassword)
+generateB.addEventListener("click", givePass)
