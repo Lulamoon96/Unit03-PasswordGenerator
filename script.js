@@ -100,6 +100,7 @@ function append(pass) {
 
 }
 
+//Function used to copy the password to the clipboard
 function copyPass() {
 
     var copyText = document.getElementById("currPass");
@@ -122,22 +123,6 @@ function createPassword() {
     var charAccess = chars.length
     var password = ""
 
-// Ensures at least one option is chosen
-    if (checkedOne !== true) {
-
-        alert("Please select at least one option.")
-        return
-
-    }
-
-//Ensures a valid length is used
-    if (length < 8 || length > 128) {
-
-        alert("Please enter a valid length")
-        return
-
-    }
-
 // Iterates through chosen character sets randomly and adds to password
     for (i = 0; i < length; i++) {
 
@@ -149,12 +134,10 @@ function createPassword() {
 
     return password
 
-    // console.log(password.length)
-    // append(password)
-
 }
 
 //Verifies the password matches the requirements using regular expression
+//Regular expression is built based on what options the user has chosen
 function verifyPass(pass) {
 
     upper = document.getElementById("uppercase").checked
@@ -162,6 +145,10 @@ function verifyPass(pass) {
     numb = document.getElementById("numbers").checked
     symb = document.getElementById("symbols").checked
     checked = [upper, lower, numb, symb]
+
+    //What is toBuild?
+    //When you make a new RegExp, it initializes with a default value which ended up always failing my password
+    //To get around that, the first time the forEach loop hits an option that is checked, that is set as the regex to build off of
     var toBuild = 0
     var regEx = new RegExp
     var regUp = /(?=.*[A-Z])/
@@ -169,7 +156,6 @@ function verifyPass(pass) {
     var regNum = /(?=.*\d)/
     var regSpec = /(?=.*[!"#$%&'()*+,-./:;<=>?@[\]^_`{|}~])/
     var regCont = [regUp, regLow, regNum, regSpec]
-    // var test = /(?=.*[A-Z])(?=.*[a-z])(?=.*\d)/
 
     checked.forEach(function(bool, i){
 
@@ -205,6 +191,22 @@ function givePass(event) {
     event.preventDefault()
     var pass = createPassword()
     var verify = verifyPass(pass)
+
+    // Ensures at least one option is chosen
+    if (checkedOne !== true) {
+
+        alert("Please select at least one option.")
+        return
+
+    }
+
+    //Ensures a valid length is used
+    if (length < 8 || length > 128) {
+
+        alert("Please enter a valid length.")
+        return
+
+    }
 
     while (!verify) {
 
