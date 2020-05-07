@@ -188,6 +188,8 @@ function verifyPass(pass) {
 //Function to actually generate the password on click
 function givePass(event) {
 
+    event.preventDefault()
+
     // Ensures at least one option is chosen
     checkedOne = Array.prototype.slice.call(checkboxes).some(x => x.checked)
     if (checkedOne !== true) {
@@ -197,7 +199,6 @@ function givePass(event) {
 
     }
 
-    event.preventDefault()
     var pass = createPassword()
     var verify = verifyPass(pass)
     var length = document.getElementById("length").value
