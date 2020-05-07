@@ -118,10 +118,10 @@ function copyPass() {
 function createPassword() {
 
     checkedOne = Array.prototype.slice.call(checkboxes).some(x => x.checked)
-    var length = document.getElementById("length").value
     var chars = charSetMake()
     var charAccess = chars.length
     var password = ""
+    var length = document.getElementById("length").value
 
 // Iterates through chosen character sets randomly and adds to password
     for (i = 0; i < length; i++) {
@@ -188,17 +188,19 @@ function verifyPass(pass) {
 //Function to actually generate the password on click
 function givePass(event) {
 
-    event.preventDefault()
-    var pass = createPassword()
-    var verify = verifyPass(pass)
-
     // Ensures at least one option is chosen
+    checkedOne = Array.prototype.slice.call(checkboxes).some(x => x.checked)
     if (checkedOne !== true) {
 
         alert("Please select at least one option.")
         return
 
     }
+
+    event.preventDefault()
+    var pass = createPassword()
+    var verify = verifyPass(pass)
+    var length = document.getElementById("length").value
 
     //Ensures a valid length is used
     if (length < 8 || length > 128) {
